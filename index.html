@@ -1,0 +1,1669 @@
+<!DOCTYPE html>
+<html lang="bn" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SM CYBER HELP — User Portal</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        navy: '#061B4F',
+                        gold: '#FFC400',
+                        cgreen: '#16833B',
+                        cred: '#D71920'
+                    },
+                    fontFamily: {
+                        sans: ['Hind Siliguri', 'Inter', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .glass-nav {
+            background: rgba(6, 27, 79, 0.95);
+            backdrop-filter: blur(10px);
+        }
+        .service-card {
+            transition: all 0.3s ease;
+        }
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px -10px rgba(6, 27, 79, 0.2);
+            border-color: #FFC400;
+        }
+        .countdown-timer {
+            font-variant-numeric: tabular-nums;
+        }
+        .lucide {
+            display: inline-block;
+        }
+        .service-card-admin {
+            transition: all 0.3s ease;
+        }
+        .service-card-admin:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px -8px rgba(6, 27, 79, 0.15);
+        }
+        #adminSessionNotice {
+            animation: slideDown 0.5s ease;
+        }
+        @keyframes slideDown {
+            from {
+                transform: translate(-50%, -100%);
+                opacity: 0;
+            }
+            to {
+                transform: translate(-50%, 0);
+                opacity: 1;
+            }
+        }
+        /* Service search bar styles */
+        #serviceSearchInput {
+            transition: all 0.3s ease;
+        }
+        #serviceSearchInput:focus {
+            box-shadow: 0 0 0 3px rgba(6, 27, 79, 0.2);
+            border-color: #061B4F;
+        }
+        .service-card-admin {
+            transition: all 0.3s ease;
+        }
+        .service-card-admin.hidden-service {
+            display: none !important;
+        }
+        #clearServiceSearch {
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        #clearServiceSearch:hover {
+            color: #D71920;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans selection:bg-gold selection:text-navy">
+
+    <!-- TOP HEADER -->
+    <header class="glass-nav sticky top-0 z-50 text-white shadow-md border-b border-navy/20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <div id="headerBranding" class="flex items-center gap-3 group cursor-pointer" onclick="goToHome()">
+                <div id="headerLogoContainer" class="w-12 h-12 rounded-xl bg-gradient-to-br from-gold to-amber-500 flex items-center justify-center text-navy shadow-lg group-hover:scale-105 transition overflow-hidden">
+                    <i data-lucide="monitor-dot" class="w-7 h-7"></i>
+                </div>
+                <div>
+                    <span id="headerCafeName" class="block font-bold text-lg sm:text-xl tracking-wide text-white">SM CYBER HELP</span>
+                    <span class="block text-[11px] text-gold font-medium tracking-wider">DIGITAL SERVICE PORTAL</span>
+                </div>
+            </div>
+
+            <nav class="hidden lg:flex items-center gap-6 text-sm font-medium">
+                <a href="#services" class="hover:text-gold transition">হোম</a>
+                <a href="#voter" class="hover:text-gold transition service-nav-link">Voter</a>
+                <a href="#ration" class="hover:text-gold transition service-nav-link">Ration</a>
+                <a href="#aadhaar" class="hover:text-gold transition service-nav-link">Aadhaar</a>
+                <a href="#dl" class="hover:text-gold transition service-nav-link">DL</a>
+                <a href="#passport" class="hover:text-gold transition service-nav-link">Passport</a>
+                <a href="#csc" class="hover:text-gold transition service-nav-link">CSC</a>
+                <a href="#wbgov" class="hover:text-gold transition service-nav-link">Govt Services</a>
+                <a href="#contact" class="hover:text-gold transition">যোগাযোগ</a>
+            </nav>
+
+            <div class="hidden sm:flex items-center gap-3">
+                <a href="tel:8101384127" class="px-3 py-2 rounded-xl bg-cgreen hover:bg-emerald-700 text-white text-xs font-bold shadow transition flex items-center gap-1.5">
+                    <i data-lucide="phone-call" class="w-3.5 h-3.5"></i> 8101384127
+                </a>
+                <button onclick="openAuthModal()" class="px-4 py-2 rounded-xl bg-gold hover:bg-amber-400 text-navy text-xs font-bold shadow transition flex items-center gap-1.5">
+                    <i data-lucide="user" class="w-3.5 h-3.5"></i> ক্যাফে লগইন / রেজিস্টার
+                </button>
+                <button onclick="openAdminLoginModal()" class="px-4 py-2 rounded-xl bg-slate-800 text-white text-xs font-bold shadow transition flex items-center gap-1.5">
+                    <i data-lucide="shield" class="w-3.5 h-3.5"></i> অ্যাডমিন
+                </button>
+            </div>
+
+            <button id="menuBtn" class="lg:hidden p-2 text-white hover:text-gold transition focus:outline-none">
+                <i data-lucide="menu" class="w-7 h-7"></i>
+            </button>
+        </div>
+
+        <div id="mobileMenu" class="hidden lg:hidden glass-nav border-t border-slate-700 px-4 py-4 space-y-3">
+            <a href="#services" class="block py-1 hover:text-gold transition text-sm">হোম</a>
+            <a href="#voter" class="block py-1 hover:text-gold transition text-sm service-nav-link">Voter Services</a>
+            <a href="#ration" class="block py-1 hover:text-gold transition text-sm service-nav-link">Ration Services</a>
+            <a href="#aadhaar" class="block py-1 hover:text-gold transition text-sm service-nav-link">Aadhaar Services</a>
+            <a href="#dl" class="block py-1 hover:text-gold transition text-sm service-nav-link">Driving Licence</a>
+            <a href="#passport" class="block py-1 hover:text-gold transition text-sm service-nav-link">Passport</a>
+            <a href="#csc" class="block py-1 hover:text-gold transition text-sm service-nav-link">CSC Portal</a>
+            <a href="#wbgov" class="block py-1 hover:text-gold transition text-sm service-nav-link">WB Govt Services</a>
+            <a href="#contact" class="block py-1 hover:text-gold transition text-sm">যোগাযোগ</a>
+            <div class="pt-2 border-t border-slate-700 flex flex-col gap-2">
+                <button onclick="openAuthModal()" class="w-full py-2.5 rounded-xl bg-gold text-navy font-bold text-xs">ক্যাফে লগইন / রেজিস্টার</button>
+                <button onclick="openAdminLoginModal()" class="w-full py-2.5 rounded-xl bg-slate-800 text-white font-bold text-xs flex items-center justify-center gap-1"><i data-lucide="shield" class="w-3.5 h-3.5"></i> সুপার অ্যাডমিন লগইন</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- FLOATING ADMIN LOGIN BUTTON -->
+    <button onclick="openAdminLoginModal()" class="fixed bottom-24 right-6 z-40 bg-navy text-gold p-3 rounded-full shadow-xl hover:scale-105 transition flex items-center justify-center border border-gold/40" title="Super Admin Login">
+        <i data-lucide="shield" class="w-5 h-5"></i>
+    </button>
+
+    <!-- MAIN APP CONTAINER -->
+    <div id="appContainer">
+
+        <!-- HERO SECTION -->
+        <section class="bg-navy text-white relative overflow-hidden py-16 lg:py-24 px-4 sm:px-6 lg:px-8 border-b-4 border-gold">
+            <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#ffffff_1px,transparent_1px)] [background-size:16px_16px]"></div>
+            <div class="max-w-5xl mx-auto text-center relative z-10">
+                <span class="inline-block px-4 py-1.5 rounded-full bg-gold/10 text-gold text-xs font-bold tracking-widest uppercase mb-4 border border-gold/20">
+                    SM CYBER HELP
+                </span>
+                <h1 class="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight mb-4">
+                    অনলাইনের যাবতীয় কাজ এখন এক জায়গায়
+                </h1>
+                <p class="text-base sm:text-lg text-slate-300 max-w-2xl mx-auto mb-8 font-light">
+                    “এখানে অভিজ্ঞ এবং দক্ষ অপারেটর দ্বারা অনলাইনের যাবতীয় কাজ করা হয়।”
+                </p>
+                <div class="text-xs sm:text-sm text-gold font-medium mb-8 flex flex-wrap justify-center gap-2">
+                    <span>Voter</span> • <span>Ration</span> • <span>Aadhaar</span> • <span>DL</span> • <span>Passport</span> • <span>CSC</span> • <span>Government Services</span>
+                </div>
+                <div class="flex flex-wrap justify-center gap-4">
+                    <a href="#services" class="px-6 py-3.5 rounded-xl bg-gold hover:bg-amber-400 text-navy font-bold text-sm shadow-xl transition flex items-center gap-2">
+                        <i data-lucide="layout-grid" class="w-5 h-5"></i> সকল সার্ভিস দেখুন
+                    </a>
+                    <button onclick="openAuthModal()" class="px-6 py-3.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm shadow-xl transition flex items-center gap-2">
+                        <i data-lucide="user-plus" class="w-5 h-5"></i> ক্যাফে অ্যাকাউন্ট খুলুন
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- QUICK SERVICE SEARCH -->
+        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-8 relative z-20">
+            <div class="glass bg-white/90 backdrop-blur-md rounded-2xl p-4 sm:p-6 shadow-2xl border border-slate-200">
+                <div class="relative mb-4">
+                    <i data-lucide="search" class="w-5 h-5 absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                    <input id="searchInput" type="text" placeholder="আপনি কোন সার্ভিস খুঁজছেন? (যেমন: Voter, Ration, Passport, DL...)" class="w-full pl-12 pr-4 py-3 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-navy bg-slate-50 shadow-inner" />
+                </div>
+                <div id="filterButtons" class="flex flex-wrap gap-2 text-xs font-semibold">
+                    <button onclick="filterCategory('all')" class="px-4 py-2 rounded-xl bg-navy text-white transition active-filter">All Services</button>
+                    <button onclick="filterCategory('voter')" class="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 transition">Voter</button>
+                    <button onclick="filterCategory('ration')" class="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 transition">Ration</button>
+                    <button onclick="filterCategory('aadhaar')" class="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 transition">Aadhaar</button>
+                    <button onclick="filterCategory('dl')" class="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 transition">DL</button>
+                    <button onclick="filterCategory('passport')" class="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 transition">Passport</button>
+                    <button onclick="filterCategory('csc')" class="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 transition">CSC</button>
+                    <button onclick="filterCategory('gov')" class="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 transition">Government</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECURITY NOTICE -->
+        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6">
+            <div class="bg-amber-50 border-l-4 border-amber-500 p-4 rounded-xl shadow-sm flex items-start gap-3">
+                <i data-lucide="alert-triangle" class="w-6 h-6 text-amber-600 shrink-0 mt-0.5"></i>
+                <div class="text-xs sm:text-sm text-amber-900">
+                    <strong class="font-bold">গুরুত্বপূর্ণ নোটিশ:</strong> এই ওয়েবসাইটটি বিভিন্ন Online Service-এর সহজ access দেওয়ার জন্য তৈরি। কোনো সরকারি website-এর অফিসিয়াল পোর্টাল নয়। ব্যক্তিগত তথ্য দেওয়ার আগে অবশ্যই website-এর official domain যাচাই করুন।
+                </div>
+            </div>
+        </section>
+
+        <!-- DYNAMIC SERVICES CONTAINER -->
+        <div id="services" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-12">
+            <!-- Services will be rendered dynamically by JavaScript -->
+        </div>
+
+        <!-- CYBER CAFE OWN SERVICES -->
+        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+            <div class="bg-gradient-to-r from-navy to-blue-900 text-white rounded-3xl p-8 sm:p-12 shadow-2xl relative overflow-hidden">
+                <div class="absolute -right-10 -bottom-10 opacity-10"><i data-lucide="cpu" class="w-72 h-72"></i></div>
+                <div class="relative z-10 max-w-3xl">
+                    <span class="px-3 py-1 rounded-full bg-gold text-navy text-xs font-bold uppercase tracking-wider">OUR SPECIALITY</span>
+                    <h2 class="text-2xl sm:text-3xl font-extrabold mt-3 mb-4">আমাদের নিজস্ব সাইবার ক্যাফে সেবা</h2>
+                    <p class="text-slate-300 text-sm mb-6">অনলাইনের যাবতীয় কাজ যেমন— ফর্ম ফিলাপ, স্ক্যানিং, প্রিন্টিং, ফটো প্রিন্ট, স্কলারশিপ ও কলেজ ফর্ম, টিকিট বুকিং এবং সমস্ত রকম সরকারি ও বেসরকারি কাজ খুব যত্নসহকারে করা হয়।</p>
+                    <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 text-xs font-medium mb-8 text-slate-200">
+                        <div class="flex items-center gap-2"><i data-lucide="check-circle-2" class="w-4 h-4 text-gold"></i> Online Form Fill-Up</div>
+                        <div class="flex items-center gap-2"><i data-lucide="check-circle-2" class="w-4 h-4 text-gold"></i> Document Upload</div>
+                        <div class="flex items-center gap-2"><i data-lucide="check-circle-2" class="w-4 h-4 text-gold"></i> Digital Photo & Print</div>
+                        <div class="flex items-center gap-2"><i data-lucide="check-circle-2" class="w-4 h-4 text-gold"></i> Scholarship Form</div>
+                        <div class="flex items-center gap-2"><i data-lucide="check-circle-2" class="w-4 h-4 text-gold"></i> College Form</div>
+                        <div class="flex items-center gap-2"><i data-lucide="check-circle-2" class="w-4 h-4 text-gold"></i> Ticket Booking</div>
+                    </div>
+                    <a href="https://wa.me/918101384127?text=%E0%A6%86%E0%A6%AE%E0%A6%BF%20%E0%A6%8F%E0%A6%95%E0%A6%9F%E0%A6%BF%20Online%20Service%20%E0%A6%95%E0%A6%B0%E0%A6%A4%E0%A7%87%20%E0%A6%9A%E0%A6%BE%E0%A6%87%20%E0%A5%A4" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gold hover:bg-amber-400 text-navy font-bold text-sm shadow-lg transition">
+                        <span>আমাদের মাধ্যমে কাজ করান</span> <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- ELECTRICAL SERVICE SECTION -->
+        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+            <div class="bg-amber-50 border-2 border-gold rounded-3xl p-6 sm:p-8 shadow-lg flex flex-col md:flex-row items-center justify-between gap-6">
+                <div class="flex items-center gap-4">
+                    <div class="w-14 h-14 rounded-2xl bg-gold text-navy flex items-center justify-center shrink-0 shadow"><i data-lucide="zap" class="w-8 h-8"></i></div>
+                    <div>
+                        <span class="text-xs font-bold text-amber-700 uppercase tracking-widest">SPECIAL SERVICE</span>
+                        <h3 class="text-xl sm:text-2xl font-bold text-slate-900">ইলেকট্রিকের লোড বাড়ানোর জন্য যোগাযোগ করুন!</h3>
+                        <p class="text-xs sm:text-sm text-slate-600 mt-1">আপনি কি AC লাগাচ্ছেন? তাহলে তো আপনার লোড বাড়াতে হবে! অভিজ্ঞ টেকনিশিয়ান দ্বারা দ্রুত ও সহজ প্রক্রিয়ায় কাজ সম্পন্ন করা হয়।</p>
+                    </div>
+                </div>
+                <a href="https://wa.me/918101384127?text=%E0%A6%86%E0%A6%AE%E0%A6%BF%20%E0%A6%87%E0%A6%B2%E0%A7%87%E0%A6%95%E0%A7%8D%E0%A6%9F%E0%A7%8D%E0%A6%B0%E0%A6%BF%E0%A6%95%E0%A7%8F%E0%A6%B0%20%E0%A6%B2%E0%A7%8B%E0%A6%A1%20%E0%A6%AC%E0%A6%BE%E0%A6%A1%E0%A6%BC%E0%A6%BE%E0%A6%A8%E0%A7%8B%E0%A6%B0%20%E0%A6%AC%E0%A6%BF%E0%A6%B7%E0%A7%9F%E0%A7%87%20%E0%A6%9C%E0%A6%BE%E0%A6%A8%E0%A6%A4%E0%A7%87%20%E0%A6%AA%E0%A6%BE%E0%A6%B0%E0%A6%BF%20કી%E0%A5%A4" target="_blank" rel="noopener noreferrer" class="px-6 py-3 rounded-xl bg-cgreen hover:bg-emerald-700 text-white font-bold text-sm shadow transition flex items-center gap-2 shrink-0">
+                    <i data-lucide="phone" class="w-4 h-4"></i> যোগাযোগ করুন (8101384127)
+                </a>
+            </div>
+        </section>
+
+        <!-- HOW IT WORKS -->
+        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+            <div class="text-center mb-10">
+                <h2 class="text-2xl font-bold text-navy">কীভাবে কাজ করবেন?</h2>
+                <p class="text-xs text-slate-500 mt-1">খুব সহজ কয়েকটি ধাপে আপনার প্রয়োজনীয় কাজটি সম্পন্ন করুন</p>
+            </div>
+            <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="bg-white p-6 rounded-2xl border border-slate-200 text-center shadow-sm">
+                    <div class="w-10 h-10 rounded-full bg-navy text-gold font-bold flex items-center justify-center mx-auto mb-3 text-sm">01</div>
+                    <h4 class="font-bold text-sm mb-1">Service নির্বাচন করুন</h4>
+                    <p class="text-xs text-slate-500">আমাদের তালিকা থেকে আপনার প্রয়োজনীয় সার্ভিসটি খুঁজুন।</p>
+                </div>
+                <div class="bg-white p-6 rounded-2xl border border-slate-200 text-center shadow-sm">
+                    <div class="w-10 h-10 rounded-full bg-navy text-gold font-bold flex items-center justify-center mx-auto mb-3 text-sm">02</div>
+                    <h4 class="font-bold text-sm mb-1">লগইন করুন</h4>
+                    <p class="text-xs text-slate-500">ক্যাফে অ্যাকাউন্ট দিয়ে লগইন করুন।</p>
+                </div>
+                <div class="bg-white p-6 rounded-2xl border border-slate-200 text-center shadow-sm">
+                    <div class="w-10 h-10 rounded-full bg-navy text-gold font-bold flex items-center justify-center mx-auto mb-3 text-sm">03</div>
+                    <h4 class="font-bold text-sm mb-1">সার্ভিস অ্যাক্সেস করুন</h4>
+                    <p class="text-xs text-slate-500">লগইন করার পর সব সরকারি পোর্টালে এক ক্লিকে যান।</p>
+                </div>
+                <div class="bg-white p-6 rounded-2xl border border-slate-200 text-center shadow-sm">
+                    <div class="w-10 h-10 rounded-full bg-gold text-navy font-bold flex items-center justify-center mx-auto mb-3 text-sm">04</div>
+                    <h4 class="font-bold text-sm mb-1">অথবা আমাদের সাথে যোগাযোগ করুন</h4>
+                    <p class="text-xs text-slate-500">সরাসরি আমাদের ক্যাফেতে এসে কাজ করিয়ে নিন।</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- CONTACT SECTION -->
+        <section id="contact" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+            <div class="bg-white rounded-3xl p-8 sm:p-12 border border-slate-200 shadow-xl grid lg:grid-cols-2 gap-8 items-center">
+                <div>
+                    <span class="text-xs font-bold text-navy uppercase tracking-widest">GET IN TOUCH</span>
+                    <h2 class="text-2xl sm:text-3xl font-extrabold text-navy mt-2 mb-6">📞 যোগাযোগ করুন</h2>
+                    <div class="space-y-4 text-sm text-slate-600">
+                        <div class="flex items-start gap-3">
+                            <div class="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center text-navy shrink-0"><i data-lucide="map-pin" class="w-5 h-5"></i></div>
+                            <div><strong class="text-slate-900 block">ঠিকানা:</strong> শিয়াখালা বাজার, কল্পনা লজের সন্নিকটে, হুগলী, পশ্চিমবঙ্গ</div>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center text-navy shrink-0"><i data-lucide="phone" class="w-5 h-5"></i></div>
+                            <div><strong class="text-slate-900 block">মোবাইল:</strong> <a href="tel:8101384127" class="text-navy font-bold hover:underline">8101384127</a></div>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center text-navy shrink-0"><i data-lucide="message-square" class="w-5 h-5"></i></div>
+                            <div><strong class="text-slate-900 block">WhatsApp:</strong> <a href="https://wa.me/918101384127" target="_blank" rel="noopener noreferrer" class="text-cgreen font-bold hover:underline">+91 8101384127</a></div>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center text-navy shrink-0"><i data-lucide="mail" class="w-5 h-5"></i></div>
+                            <div><strong class="text-slate-900 block">Email:</strong> <a href="mailto:sm7cocybercafe@gmail.com" class="text-navy hover:underline">sm7cocybercafe@gmail.com</a></div>
+                        </div>
+                    </div>
+                    <div class="flex flex-wrap gap-3 mt-8">
+                        <a href="tel:8101384127" class="px-5 py-2.5 rounded-xl bg-navy text-white text-xs font-bold shadow hover:bg-blue-900 transition flex items-center gap-2">
+                            <i data-lucide="phone-call" class="w-4 h-4"></i> Call Now
+                        </a>
+                        <a href="https://wa.me/918101384127" target="_blank" rel="noopener noreferrer" class="px-5 py-2.5 rounded-xl bg-cgreen text-white text-xs font-bold shadow hover:bg-emerald-700 transition flex items-center gap-2">
+                            <i data-lucide="message-circle" class="w-4 h-4"></i> WhatsApp
+                        </a>
+                    </div>
+                </div>
+                <div class="h-80 w-full rounded-2xl overflow-hidden border border-slate-200 shadow-inner">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3682.497576541097!2d88.1565!3d22.7533!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjLCsDQ1JzExLjkiTiA4OMKwMDknMjMuNCJF!5e0!3m2!1sen!2sin!4v1620000000000!5m2!1sen!2sin" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                </div>
+            </div>
+        </section>
+
+    </div> <!-- End of #appContainer -->
+
+    <!-- FLOATING WHATSAPP BUTTON -->
+    <a href="https://wa.me/918101384127?text=%E0%A6%86%E0%A6%B8%E0%A6%B8%E0%A6%B2%E0%A6%BE%E0%A6%AE%E0%A7%81%20%E0%A6%86%E0%A6%B2%E0%A6%BE%E0%A6%87%E0%A6%95%E0%A7%81%E0%A6%AE%E0%A5%A4%20%E0%A6%86%E0%A6%AE%E0%A6%BF%20SM7%20CO%20%26%20CYBER%20CAFFE-%E0%A6%8F%E0%A6%B0%20%E0%A6%8F%E0%A6%95%E0%A6%9F%E0%A6%BF%20Online%20Service%20%E0%A6%B8%E0%A6%B0%E0%A7%8D%E0%A6%AA%E0%A6%B0%E0%A7%8D%E0%A6%95%E0%A7%87%20%E0%A6%9C%E0%A6%BE%E0%A6%A8%E0%A6%A4%E0%A7%87%20%E0%A6%9A%E0%A6%BE%E0%A6%87%20%E0%A5%A4" target="_blank" rel="noopener noreferrer" class="fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full bg-emerald-500 hover:bg-emerald-600 text-white flex items-center justify-center shadow-2xl transition hover:scale-110">
+        <i data-lucide="message-circle" class="w-8 h-8"></i>
+    </a>
+
+    <!-- FOOTER -->
+    <footer class="bg-navy text-slate-300 pt-12 pb-8 border-t border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+            <div>
+                <h3 class="text-white font-bold text-lg mb-2">SM CYBER HELP</h3>
+                <p class="text-xs text-slate-400 mb-4">"অনলাইনের যাবতীয় কাজ এক জায়গায়।" শিয়াখালা বাজার, হুগলী।</p>
+                <p class="text-xs text-gold">Mobile: 8101384127</p>
+            </div>
+            <div>
+                <h4 class="text-white font-bold text-sm mb-3">Popular Services</h4>
+                <ul class="space-y-2 text-xs">
+                    <li><a href="#voter" class="hover:text-gold transition service-nav-link">Voter Services & List</a></li>
+                    <li><a href="#ration" class="hover:text-gold transition service-nav-link">Ration Card New & Correction</a></li>
+                    <li><a href="#aadhaar" class="hover:text-gold transition service-nav-link">Aadhaar Portal Login</a></li>
+                    <li><a href="#dl" class="hover:text-gold transition service-nav-link">Driving Licence (Sarathi)</a></li>
+                    <li><a href="#passport" class="hover:text-gold transition service-nav-link">Passport Seva Portal</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-white font-bold text-sm mb-3">Contact Info</h4>
+                <p class="text-xs text-slate-400 mb-2">শিয়াখালা বাজার, কল্পনা লজের সন্নিকটে, হুগলী, পশ্চিমবঙ্গ</p>
+                <p class="text-xs text-slate-400 mb-2">Email: sm7cocybercafe@gmail.com</p>
+            </div>
+        </div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 border-t border-slate-800 pt-6 text-center text-xs text-slate-500">
+            &copy; 2026 SM CYBER HELP — All Rights Reserved.
+        </div>
+    </footer>
+
+    <!-- MODAL CONTAINER -->
+    <div id="modalOverlay" class="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm hidden flex items-center justify-center p-4 overflow-y-auto">
+        <div id="modalContent" class="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl relative max-h-[90vh] overflow-y-auto">
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
+
+    <script>
+        // ================================================================
+        // 🔥 FIREBASE CONFIGURATION
+        // ================================================================
+        const FIREBASE_CONFIG = {
+            apiKey: "AIzaSyDCEq4WqYp69hH_SiVaeD86Gi_tTNji10Y",
+            authDomain: "sm7-co-cyber-caffe.firebaseapp.com",
+            projectId: "sm7-co-cyber-caffe",
+            storageBucket: "sm7-co-cyber-caffe.firebasestorage.app",
+            messagingSenderId: "523580033193",
+            appId: "1:523580033193:web:0cbbc2a075a1cdabec41b8"
+        };
+
+        // ================================================================
+        // 📁 DATABASE KEYS
+        // ================================================================
+        const DB_KEYS = {
+            USERS: 'cybercafe_users',
+            PLANS: 'cybercafe_plans',
+            REQUESTS: 'cybercafe_payment_requests',
+            SETTINGS: 'cybercafe_payment_settings',
+            SESSION: 'cybercafe_current_session',
+            ADMIN_SESSION: 'cybercafe_admin_session',
+            LOGS: 'cybercafe_activity_logs',
+            ADMIN_CREDS: 'cybercafe_admin_credentials',
+            SERVICES: 'cybercafe_services'
+        };
+
+        // ================================================================
+        // 🔄 FIREBASE BRIDGE
+        // ================================================================
+        const FIREBASE_REMOTE_KEYS = new Set([
+            'cybercafe_users',
+            'cybercafe_plans',
+            'cybercafe_payment_requests',
+            'cybercafe_payment_settings',
+            'cybercafe_activity_logs',
+            'cybercafe_admin_credentials',
+            'cybercafe_services'
+        ]);
+
+        let firebaseDb = null;
+        let firebaseSyncReady = false;
+        const nativeStorage = {
+            getItem: Storage.prototype.getItem,
+            setItem: Storage.prototype.setItem,
+            removeItem: Storage.prototype.removeItem
+        };
+
+        function firebaseConfigIsReady() {
+            return FIREBASE_CONFIG &&
+                FIREBASE_CONFIG.apiKey &&
+                !FIREBASE_CONFIG.apiKey.startsWith('YOUR_') &&
+                FIREBASE_CONFIG.projectId &&
+                !FIREBASE_CONFIG.projectId.startsWith('YOUR_');
+        }
+
+        async function bootstrapFirebase() {
+            if (!firebaseConfigIsReady()) {
+                console.warn('Firebase config is placeholder. Running with local cache only.');
+                return;
+            }
+
+            if (!firebase.apps.length) firebase.initializeApp(FIREBASE_CONFIG);
+            firebaseDb = firebase.firestore();
+
+            const keys = Array.from(FIREBASE_REMOTE_KEYS);
+            for (const key of keys) {
+                const snap = await firebaseDb.collection('sm7_app_state').doc(key).get();
+                if (snap.exists && Object.prototype.hasOwnProperty.call(snap.data(), 'value')) {
+                    nativeStorage.setItem.call(localStorage, key, JSON.stringify(snap.data().value));
+                }
+            }
+
+            for (const key of keys) {
+                const snap = await firebaseDb.collection('sm7_app_state').doc(key).get();
+                if (!snap.exists) {
+                    const raw = nativeStorage.getItem.call(localStorage, key);
+                    if (raw !== null) {
+                        let value = raw;
+                        try { value = JSON.parse(raw); } catch (_) {}
+                        await firebaseDb.collection('sm7_app_state').doc(key).set({
+                            value,
+                            updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                        });
+                    }
+                }
+            }
+
+            keys.forEach(key => {
+                firebaseDb.collection('sm7_app_state').doc(key).onSnapshot(snap => {
+                    if (!snap.exists) return;
+                    const data = snap.data();
+                    if (!Object.prototype.hasOwnProperty.call(data, 'value')) return;
+                    nativeStorage.setItem.call(localStorage, key, JSON.stringify(data.value));
+                    if (firebaseSyncReady) {
+                        clearTimeout(window.__sm7UserRefresh);
+                        window.__sm7UserRefresh = setTimeout(() => {
+                            checkCurrentSession();
+                            renderDynamicServices();
+                        }, 80);
+                    }
+                });
+            });
+
+            const originalSetItem = Storage.prototype.setItem;
+            Storage.prototype.setItem = function(key, value) {
+                originalSetItem.call(this, key, value);
+                if (this === localStorage && FIREBASE_REMOTE_KEYS.has(key) && firebaseSyncReady && firebaseDb) {
+                    let parsed = value;
+                    try { parsed = JSON.parse(value); } catch (_) {}
+                    firebaseDb.collection('sm7_app_state').doc(key).set({
+                        value: parsed,
+                        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                    }, { merge: true }).catch(err => console.error('Firestore write failed:', key, err));
+                }
+            };
+
+            firebaseSyncReady = true;
+        }
+
+        // ================================================================
+        // 💾 INIT SYSTEM STORAGE
+        // ================================================================
+        function initSystemStorage() {
+            if (!localStorage.getItem(DB_KEYS.USERS)) {
+                localStorage.setItem(DB_KEYS.USERS, JSON.stringify([]));
+            }
+            if (!localStorage.getItem(DB_KEYS.PLANS)) {
+                const defaultPlans = [
+                    { id: 'p_basic', name: 'BASIC', price: 199, days: 30, desc: 'Essential features for 1 month', features: ['All External Portals', 'Standard Support', 'Daily Updates'], active: true },
+                    { id: 'p_pro', name: 'PRO', price: 299, days: 180, desc: 'Advanced access for 6 months', features: ['All External Portals', 'Priority Support', 'Custom Branding', 'Advanced Tools'], active: true },
+                    { id: 'p_life', name: 'LIFETIME', price: 499, days: null, desc: 'Lifetime unlimited access', features: ['All Features', 'VIP Support', 'Lifetime Validity', 'Free Upgrades'], active: true }
+                ];
+                localStorage.setItem(DB_KEYS.PLANS, JSON.stringify(defaultPlans));
+            }
+            if (!localStorage.getItem(DB_KEYS.REQUESTS)) {
+                localStorage.setItem(DB_KEYS.REQUESTS, JSON.stringify([]));
+            }
+            if (!localStorage.getItem(DB_KEYS.SETTINGS)) {
+                localStorage.setItem(DB_KEYS.SETTINGS, JSON.stringify({
+                    upiId: '8101384127@upi',
+                    payeeName: 'SM CYBER HELP',
+                    qrCodeUrl: '',
+                    instructions: 'Scan QR or pay via UPI ID. Enter exact UTR / Transaction ID after payment. (2 minute limit)'
+                }));
+            }
+            if (!localStorage.getItem(DB_KEYS.LOGS)) {
+                localStorage.setItem(DB_KEYS.LOGS, JSON.stringify([]));
+            }
+            if (!localStorage.getItem(DB_KEYS.ADMIN_CREDS)) {
+                localStorage.setItem(DB_KEYS.ADMIN_CREDS, JSON.stringify({ adminId: 'admin', password: '1234' }));
+            }
+            if (!localStorage.getItem(DB_KEYS.SERVICES)) {
+                const defaultServices = [
+                    { id: 'svc_1', name: 'Voter Login', url: 'https://voters.eci.gov.in/login', category: 'voter', icon: '🗳️', active: true },
+                    { id: 'svc_2', name: 'Voter List', url: 'https://voters.eci.gov.in/download-eroll?stateCode=S25', category: 'voter', icon: '📋', active: true },
+                    { id: 'svc_3', name: 'EPIC Search', url: 'https://electoralsearch.eci.gov.in/', category: 'voter', icon: '🔎', active: true },
+                    { id: 'svc_4', name: 'Ration New/Transfer', url: 'https://wbpds.wb.gov.in/rcmsnew/AadhaarAuthenticationLogin/Index', category: 'ration', icon: '🍚', active: true },
+                    { id: 'svc_5', name: 'Ration Correction', url: 'https://wbpds.wb.gov.in/Benificiary_Deatils_Update_by_Aadhaar.aspx', category: 'ration', icon: '✏️', active: true },
+                    { id: 'svc_6', name: 'Ration Download', url: 'https://wbpds.wb.gov.in/E_Card_Download.aspx', category: 'ration', icon: '⬇️', active: true },
+                    { id: 'svc_7', name: 'Ration Mobile Link', url: 'https://wbpds.wb.gov.in/(S(tbbfj2woolnqyhmxsafxoi3s))/Mobile_Update_by_Aadhaar.aspx', category: 'ration', icon: '📱', active: true },
+                    { id: 'svc_8', name: 'Ration Status', url: 'https://wbpds.wb.gov.in/E_Card_Download.aspx', category: 'ration', icon: '📊', active: true },
+                    { id: 'svc_9', name: 'Driving Licence', url: 'https://sarathi.parivahan.gov.in/sarathiservice/stateSelection.do', category: 'dl', icon: '🚗', active: true },
+                    { id: 'svc_10', name: 'Aadhaar Login', url: 'https://myaadhaar.uidai.gov.in/en', category: 'aadhaar', icon: '🪪', active: true },
+                    { id: 'svc_11', name: 'Passport Portal', url: 'https://services2.passportindia.gov.in/forms/PreLogin', category: 'passport', icon: '🛂', active: true },
+                    { id: 'svc_12', name: 'CSC Login', url: 'https://digitalseva.csc.gov.in/', category: 'csc', icon: '💻', active: true },
+                    { id: 'svc_13', name: 'CSC UTI', url: 'https://connect.csc.gov.in/account/authorize?state=100529&response_type=code&client_id=5c6f6fbc-1435-40d5-f3d9-340e9dc5b457&redirect_uri=https://www.myutiitsl.com/panonlineservices/loginCheckCSCConnect', category: 'csc', icon: '💳', active: true },
+                    { id: 'svc_14', name: 'CSC NSDL', url: 'https://egovcsc.csccloud.in/nsdl/', category: 'csc', icon: '💻', active: true },
+                    { id: 'svc_15', name: 'BanglarBhumi', url: 'https://banglarbhumi.gov.in/BanglarBhumi/Home.action#', category: 'gov', icon: '🏠', active: true },
+                    { id: 'svc_16', name: 'Panchayat Certificate', url: 'https://wbpms.in/citizen/', category: 'gov', icon: '📄', active: true },
+                    { id: 'svc_17', name: 'Annapurna Bhandar', url: 'https://socialregistry.wb.gov.in/', category: 'gov', icon: '🏦', active: true },
+                    { id: 'svc_18', name: 'WB Prakalpa Status', url: 'https://samarth.wb.gov.in/track-applicant-public', category: 'gov', icon: '📌', active: true },
+                    { id: 'svc_19', name: 'Trade Licence', url: 'https://silpasathi.wb.gov.in/user/login', category: 'gov', icon: '🏪', active: true },
+                    { id: 'svc_20', name: 'Anumodan', url: 'https://anumodan.wb.gov.in/', category: 'gov', icon: '✅', active: true }
+                ];
+                localStorage.setItem(DB_KEYS.SERVICES, JSON.stringify(defaultServices));
+            }
+        }
+
+        function logActivity(action, userId, cafeName, note) {
+            const logs = JSON.parse(localStorage.getItem(DB_KEYS.LOGS)) || [];
+            logs.unshift({
+                id: 'log_' + Date.now(),
+                timestamp: new Date().toLocaleString('en-IN'),
+                action,
+                userId: userId || 'System',
+                cafeName: cafeName || 'N/A',
+                note: note || ''
+            });
+            localStorage.setItem(DB_KEYS.LOGS, JSON.stringify(logs));
+        }
+
+        function updateUserInDB(updatedUser) {
+            let users = JSON.parse(localStorage.getItem(DB_KEYS.USERS)) || [];
+            users = users.map(u => u.userId === updatedUser.userId ? updatedUser : u);
+            localStorage.setItem(DB_KEYS.USERS, JSON.stringify(users));
+        }
+
+        function goToHome() {
+            localStorage.removeItem(DB_KEYS.SESSION);
+            localStorage.removeItem(DB_KEYS.ADMIN_SESSION);
+            window.location.reload();
+        }
+
+        function logoutUser() {
+            localStorage.removeItem(DB_KEYS.SESSION);
+            localStorage.removeItem(DB_KEYS.ADMIN_SESSION);
+            window.location.reload();
+        }
+
+        // ================================================================
+        // 🌐 RENDER DYNAMIC SERVICES - PUBLIC VIEW
+        // ================================================================
+        function renderDynamicServices() {
+            const services = JSON.parse(localStorage.getItem(DB_KEYS.SERVICES)) || [];
+            const container = document.getElementById('services');
+            if (!container) return;
+
+            const categories = {};
+            services.filter(s => s.active).forEach(s => {
+                const cat = s.category || 'other';
+                if (!categories[cat]) categories[cat] = [];
+                categories[cat].push(s);
+            });
+
+            const categoryMeta = {
+                voter: { icon: '🗳️', name: 'Voter Services' },
+                ration: { icon: '🍚', name: 'Ration Card Services' },
+                aadhaar: { icon: '🪪', name: 'Aadhaar Services' },
+                dl: { icon: '🚗', name: 'Driving Licence Services' },
+                passport: { icon: '🛂', name: 'Passport Services' },
+                csc: { icon: '💻', name: 'CSC Digital Seva' },
+                gov: { icon: '🏛️', name: 'West Bengal Government Services' },
+                other: { icon: '🔗', name: 'Other Services' }
+            };
+
+            let html = '';
+
+            for (const [cat, servicesList] of Object.entries(categories)) {
+                const meta = categoryMeta[cat] || categoryMeta.other;
+                html += `
+                    <div class="service-category" data-cat="${cat}" id="${cat}">
+                        <div class="flex items-center gap-3 mb-6">
+                            <div class="w-10 h-10 rounded-xl bg-navy text-gold flex items-center justify-center font-bold shadow">${meta.icon}</div>
+                            <h2 class="text-xl sm:text-2xl font-bold text-navy">${meta.name}</h2>
+                        </div>
+                        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                `;
+
+                servicesList.forEach(s => {
+                    html += `
+                        <div class="service-card bg-white rounded-2xl p-6 border border-slate-200 flex flex-col justify-between" data-search="${s.name} ${s.category}">
+                            <div>
+                                <div class="w-12 h-12 rounded-xl bg-blue-50 text-navy flex items-center justify-center mb-4 text-2xl">${s.icon || '🔗'}</div>
+                                <h3 class="font-bold text-base text-slate-900 mb-1">${s.name}</h3>
+                                <p class="text-xs text-slate-500 mb-6">${s.name} সংক্রান্ত অনলাইন সার্ভিস।</p>
+                                <span class="inline-block px-2 py-1 bg-amber-100 text-amber-800 text-[10px] font-bold rounded-full">🔒 লগইন প্রয়োজন</span>
+                            </div>
+                            <button onclick="redirectIfAuthorized('${s.url}')" class="w-full py-2.5 rounded-xl bg-navy hover:bg-blue-900 text-white text-xs font-bold shadow flex items-center justify-center gap-2 transition">
+                                <span>OPEN SERVICE</span> <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+                            </button>
+                        </div>
+                    `;
+                });
+
+                html += `
+                        </div>
+                    </div>
+                `;
+            }
+
+            if (Object.keys(categories).length === 0) {
+                html = `
+                    <div class="text-center py-16">
+                        <div class="text-6xl mb-4">🔧</div>
+                        <h3 class="text-xl font-bold text-slate-600">কোনো সার্ভিস পাওয়া যায়নি</h3>
+                        <p class="text-sm text-slate-400">অ্যাডমিন প্যানেল থেকে সার্ভিস যোগ করুন।</p>
+                    </div>
+                `;
+            }
+
+            container.innerHTML = html;
+            lucide.createIcons();
+        }
+
+        // ================================================================
+        // ⭐ ADMIN SESSION NOTICE
+        // ================================================================
+        function showAdminSessionNotice() {
+            if (document.getElementById('adminSessionNotice')) return;
+
+            const notice = document.createElement('div');
+            notice.id = 'adminSessionNotice';
+            notice.className = 'fixed top-20 left-1/2 -translate-x-1/2 z-50 bg-amber-100 border border-amber-400 rounded-xl px-6 py-4 shadow-xl max-w-md w-full mx-4';
+            notice.innerHTML = `
+                <div class="flex items-center gap-3">
+                    <span class="text-2xl">⚠️</span>
+                    <div>
+                        <p class="text-sm font-bold text-amber-800">আপনি অ্যাডমিন সেশনে আছেন!</p>
+                        <p class="text-xs text-amber-700">ইউজার প্যানেলে ফিরতে <button onclick="clearAdminSessionAndReload()" class="font-bold text-navy underline hover:text-blue-700">এখানে ক্লিক করুন</button></p>
+                    </div>
+                    <button onclick="clearAdminSessionAndReload()" class="ml-auto text-amber-800 hover:text-amber-900">
+                        <i data-lucide="x" class="w-5 h-5"></i>
+                    </button>
+                </div>
+            `;
+            document.body.prepend(notice);
+            lucide.createIcons();
+        }
+
+        function clearAdminSessionAndReload() {
+            localStorage.removeItem(DB_KEYS.ADMIN_SESSION);
+            localStorage.removeItem(DB_KEYS.SESSION);
+            const notice = document.getElementById('adminSessionNotice');
+            if (notice) notice.remove();
+            window.location.reload();
+        }
+
+        // ================================================================
+        // 🔐 SESSION CHECK
+        // ================================================================
+        function checkCurrentSession() {
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('logout') === 'admin') {
+                localStorage.removeItem(DB_KEYS.ADMIN_SESSION);
+                localStorage.removeItem(DB_KEYS.SESSION);
+                window.history.replaceState({}, document.title, window.location.pathname);
+                window.location.reload();
+                return;
+            }
+
+            const adminSession = localStorage.getItem(DB_KEYS.ADMIN_SESSION);
+            if (adminSession === 'true') {
+                showAdminSessionNotice();
+                updateHeaderBranding("SM CYBER HELP", null);
+                renderPublicView();
+                return;
+            }
+
+            const sessionUserStr = localStorage.getItem(DB_KEYS.SESSION);
+            if (sessionUserStr) {
+                const sessionUser = JSON.parse(sessionUserStr);
+                const users = JSON.parse(localStorage.getItem(DB_KEYS.USERS)) || [];
+                const freshUser = users.find(u => u.userId === sessionUser.userId);
+
+                if (!freshUser) {
+                    logoutUser();
+                    return;
+                }
+
+                if (freshUser.status === 'ACTIVE' && freshUser.expiryDate) {
+                    if (new Date() > new Date(freshUser.expiryDate)) {
+                        freshUser.status = 'EXPIRED';
+                        updateUserInDB(freshUser);
+                    }
+                }
+
+                updateHeaderBranding(freshUser.cafeName, freshUser.logo);
+                renderUserPanel(freshUser);
+                return;
+            }
+
+            updateHeaderBranding("SM CYBER HELP", null);
+            renderPublicView();
+        }
+
+        function updateHeaderBranding(cafeName, logoUrl) {
+            const nameEl = document.getElementById('headerCafeName');
+            const logoContainer = document.getElementById('headerLogoContainer');
+            if (nameEl) nameEl.textContent = cafeName;
+            if (logoContainer) {
+                if (logoUrl) {
+                    logoContainer.innerHTML = `<img src="${logoUrl}" alt="Logo" class="w-full h-full object-cover">`;
+                } else {
+                    logoContainer.innerHTML = `<i data-lucide="monitor-dot" class="w-7 h-7 text-navy"></i>`;
+                    lucide.createIcons();
+                }
+            }
+        }
+
+        // ================================================================
+        // 🔐 ADMIN LOGIN
+        // ================================================================
+        function openAdminLoginModal() {
+            const content = `
+                <div class="flex items-center justify-between mb-6">
+                    <div class="flex items-center gap-2">
+                        <div class="w-10 h-10 rounded-xl bg-navy text-gold flex items-center justify-center"><i data-lucide="shield" class="w-5 h-5"></i></div>
+                        <h3 class="font-bold text-xl text-navy">সুপার অ্যাডমিন লগইন</h3>
+                    </div>
+                    <button onclick="closeModal()" class="p-1 rounded-lg hover:bg-slate-100"><i data-lucide="x" class="w-5 h-5"></i></button>
+                </div>
+                <div class="bg-blue-50 border border-blue-200 rounded-xl p-3 mb-4 text-xs text-blue-700">
+                    ⚡ Admin Panel: <strong>smcyberhelpadmin.netlify.app</strong>
+                </div>
+                <form onsubmit="handleAdminLoginSubmit(event)" class="space-y-4">
+                    <div>
+                        <label class="text-xs font-semibold text-slate-700">Admin ID</label>
+                        <input name="adminId" required placeholder="admin" class="mt-1 w-full px-4 py-3 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-navy bg-slate-50"/>
+                    </div>
+                    <div>
+                        <label class="text-xs font-semibold text-slate-700">Password</label>
+                        <input name="password" type="password" required placeholder="••••••••" class="mt-1 w-full px-4 py-3 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-navy bg-slate-50"/>
+                    </div>
+                    <button type="submit" class="w-full py-3.5 rounded-xl bg-navy text-white text-sm font-bold shadow-lg hover:bg-blue-900 transition">
+                        🚀 অ্যাডমিন প্যানেলে যান
+                    </button>
+                </form>
+                <div class="mt-4 text-center text-xs text-slate-400">
+                    💡 <strong>New Tab</strong> এ খুলবে, আপনার ইউজার পেজ থাকবে।
+                </div>
+            `;
+            showModal(content);
+        }
+
+        function handleAdminLoginSubmit(e) {
+            e.preventDefault();
+            const fd = new FormData(e.target);
+            const id = fd.get('adminId').trim();
+            const pass = fd.get('password').trim();
+
+            const creds = JSON.parse(localStorage.getItem(DB_KEYS.ADMIN_CREDS)) || { adminId: 'admin', password: '1234' };
+
+            if (id === creds.adminId && pass === creds.password) {
+                localStorage.setItem(DB_KEYS.ADMIN_SESSION, 'true');
+                logActivity('Admin Login', 'SuperAdmin', 'System Admin', 'Admin logged into control panel.');
+                closeModal();
+                window.open('https://smcyberhelpadmin.netlify.app/', '_blank');
+                showAdminSessionNotice();
+            } else {
+                alert('❌ ভুল অ্যাডমিন আইডি বা পাসওয়ার্ড!');
+            }
+        }
+
+        // ================================================================
+        // 👤 USER AUTH
+        // ================================================================
+        function openAuthModal() {
+            const content = `
+                <div class="flex items-center justify-between mb-6">
+                    <h3 class="font-bold text-xl text-navy">ক্যাফে পোর্টাল এক্সেস</h3>
+                    <button onclick="closeModal()" class="p-1 rounded-lg hover:bg-slate-100"><i data-lucide="x" class="w-5 h-5"></i></button>
+                </div>
+                <div class="flex rounded-xl bg-slate-100 p-1 mb-6">
+                    <button id="tabLoginBtn" onclick="switchAuthTab('login')" class="flex-1 py-2.5 rounded-lg text-xs font-bold bg-white text-navy shadow">লগইন</button>
+                    <button id="tabRegBtn" onclick="switchAuthTab('register')" class="flex-1 py-2.5 rounded-lg text-xs font-bold text-slate-600">নতুন অ্যাকাউন্ট</button>
+                </div>
+                <div id="authFormBody">
+                    <form onsubmit="handleUserLogin(event)" class="space-y-4">
+                        <div>
+                            <label class="text-xs font-semibold text-slate-700">ইউজার আইডি (User ID)</label>
+                            <input name="userId" required placeholder="আপনার ইউজার আইডি দিন" class="mt-1 w-full px-4 py-3 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-navy bg-slate-50"/>
+                        </div>
+                        <div>
+                            <label class="text-xs font-semibold text-slate-700">পাসওয়ার্ড</label>
+                            <input name="password" type="password" required placeholder="••••••••" class="mt-1 w-full px-4 py-3 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-navy bg-slate-50"/>
+                        </div>
+                        <button type="submit" class="w-full py-3.5 rounded-xl bg-navy text-white text-sm font-bold shadow-lg hover:bg-blue-900 transition">লগইন করুন</button>
+                    </form>
+                </div>
+            `;
+            showModal(content);
+        }
+
+        function switchAuthTab(tab) {
+            const loginBtn = document.getElementById('tabLoginBtn');
+            const regBtn = document.getElementById('tabRegBtn');
+            const body = document.getElementById('authFormBody');
+
+            if (tab === 'login') {
+                loginBtn.className = "flex-1 py-2.5 rounded-lg text-xs font-bold bg-white text-navy shadow";
+                regBtn.className = "flex-1 py-2.5 rounded-lg text-xs font-bold text-slate-600";
+                body.innerHTML = `
+                    <form onsubmit="handleUserLogin(event)" class="space-y-4">
+                        <div>
+                            <label class="text-xs font-semibold text-slate-700">ইউজার আইডি (User ID)</label>
+                            <input name="userId" required placeholder="আপনার ইউজার আইডি দিন" class="mt-1 w-full px-4 py-3 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-navy bg-slate-50"/>
+                        </div>
+                        <div>
+                            <label class="text-xs font-semibold text-slate-700">পাসওয়ার্ড</label>
+                            <input name="password" type="password" required placeholder="••••••••" class="mt-1 w-full px-4 py-3 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-navy bg-slate-50"/>
+                        </div>
+                        <button type="submit" class="w-full py-3.5 rounded-xl bg-navy text-white text-sm font-bold shadow-lg hover:bg-blue-900 transition">লগইন করুন</button>
+                    </form>
+                `;
+            } else {
+                regBtn.className = "flex-1 py-2.5 rounded-lg text-xs font-bold bg-white text-navy shadow";
+                loginBtn.className = "flex-1 py-2.5 rounded-lg text-xs font-bold text-slate-600";
+                body.innerHTML = `
+                    <form onsubmit="handleUserRegister(event)" class="space-y-3">
+                        <div>
+                            <label class="text-xs font-semibold text-slate-700">মালিকের নাম (Owner Name)</label>
+                            <input name="ownerName" required placeholder="আপনার পুরো নাম" class="mt-1 w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-navy bg-slate-50"/>
+                        </div>
+                        <div>
+                            <label class="text-xs font-semibold text-slate-700">সাইবার ক্যাফের নাম (Cyber Café Name)</label>
+                            <input name="cafeName" required placeholder="যেমন: SM Cyber Cafe" class="mt-1 w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-navy bg-slate-50"/>
+                        </div>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="text-xs font-semibold text-slate-700">ইউজার আইডি (Unique User ID)</label>
+                                <input name="userId" required placeholder="unique_id" class="mt-1 w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-navy bg-slate-50"/>
+                            </div>
+                            <div>
+                                <label class="text-xs font-semibold text-slate-700">মোবাইল নম্বর</label>
+                                <input name="mobile" required placeholder="10 digit number" class="mt-1 w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-navy bg-slate-50"/>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="text-xs font-semibold text-slate-700">ইমেইল (ঐচ্ছিক)</label>
+                            <input name="email" type="email" placeholder="example@gmail.com" class="mt-1 w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-navy bg-slate-50"/>
+                        </div>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="text-xs font-semibold text-slate-700">পাসওয়ার্ড</label>
+                                <input name="password" type="password" required placeholder="••••••••" class="mt-1 w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-navy bg-slate-50"/>
+                            </div>
+                            <div>
+                                <label class="text-xs font-semibold text-slate-700">কনফার্ম পাসওয়ার্ড</label>
+                                <input name="confirmPassword" type="password" required placeholder="••••••••" class="mt-1 w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-navy bg-slate-50"/>
+                            </div>
+                        </div>
+                        <button type="submit" class="w-full py-3.5 rounded-xl bg-cgreen text-white text-sm font-bold shadow-lg hover:bg-emerald-700 transition mt-2">অ্যাকাউন্ট তৈরি করুন</button>
+                    </form>
+                `;
+            }
+            lucide.createIcons();
+        }
+
+        function handleUserRegister(e) {
+            e.preventDefault();
+            const fd = new FormData(e.target);
+            const ownerName = fd.get('ownerName').trim();
+            const cafeName = fd.get('cafeName').trim();
+            const userId = fd.get('userId').trim().toLowerCase();
+            const mobile = fd.get('mobile').trim();
+            const email = fd.get('email').trim() || 'sm7cocybercafe@gmail.com';
+            const password = fd.get('password').trim();
+            const confirmPassword = fd.get('confirmPassword').trim();
+
+            if (password !== confirmPassword) {
+                alert('পাসওয়ার্ড মিলছে না!');
+                return;
+            }
+
+            let users = JSON.parse(localStorage.getItem(DB_KEYS.USERS)) || [];
+            if (users.some(u => u.userId === userId)) {
+                alert('এই ইউজার আইডি ইতিমধ্যে ব্যবহৃত হয়েছে। অন্য আইডি দিন।');
+                return;
+            }
+
+            const newUser = {
+                userId,
+                password,
+                ownerName,
+                cafeName,
+                mobile,
+                email,
+                address: '',
+                logo: '',
+                status: 'PENDING',
+                subStatus: 'INACTIVE',
+                currentPlanId: null,
+                planStart: null,
+                expiryDate: null,
+                regDate: new Date().toLocaleString('en-IN'),
+                lastLogin: new Date().toLocaleString('en-IN'),
+                blockReason: ''
+            };
+
+            users.push(newUser);
+            localStorage.setItem(DB_KEYS.USERS, JSON.stringify(users));
+            localStorage.setItem(DB_KEYS.SESSION, JSON.stringify(newUser));
+
+            logActivity('User Registered', userId, cafeName, 'New cyber cafe account created.');
+            closeModal();
+            checkCurrentSession();
+            alert('আপনার অ্যাকাউন্ট সফলভাবে তৈরি হয়েছে! দয়া করে প্ল্যান বেছে পেমেন্ট সম্পন্ন করুন।');
+        }
+
+        function handleUserLogin(e) {
+            e.preventDefault();
+            const fd = new FormData(e.target);
+            const userId = fd.get('userId').trim().toLowerCase();
+            const password = fd.get('password').trim();
+
+            let users = JSON.parse(localStorage.getItem(DB_KEYS.USERS)) || [];
+            const user = users.find(u => u.userId === userId && u.password === password);
+
+            if (!user) {
+                alert('ভুল ইউজার আইডি বা পাসওয়ার্ড!');
+                return;
+            }
+
+            user.lastLogin = new Date().toLocaleString('en-IN');
+            updateUserInDB(user);
+            localStorage.setItem(DB_KEYS.SESSION, JSON.stringify(user));
+
+            logActivity('User Login', user.userId, user.cafeName, 'User logged into portal.');
+            closeModal();
+            checkCurrentSession();
+        }
+
+        function redirectIfAuthorized(url) {
+            const session = localStorage.getItem(DB_KEYS.SESSION);
+            if (!session) {
+                alert('দয়া করে প্রথমে লগইন করুন। এই সার্ভিসটি শুধুমাত্র রেজিস্টার্ড ক্যাফে মালিকদের জন্য।');
+                openAuthModal();
+                return;
+            }
+            const sessionUser = JSON.parse(session);
+            const users = JSON.parse(localStorage.getItem(DB_KEYS.USERS)) || [];
+            const freshUser = users.find(u => u.userId === sessionUser.userId);
+            if (!freshUser || freshUser.status !== 'ACTIVE') {
+                alert('আপনার অ্যাকাউন্ট সক্রিয় নয়। দয়া করে প্ল্যান পেমেন্ট সম্পন্ন করুন।');
+                return;
+            }
+            window.open(url, '_blank');
+        }
+
+        function protectServiceLinks() {
+            document.querySelectorAll('.service-nav-link').forEach(el => {
+                el.addEventListener('click', function(e) {
+                    const session = localStorage.getItem(DB_KEYS.SESSION);
+                    if (!session) {
+                        e.preventDefault();
+                        alert('দয়া করে প্রথমে লগইন করুন। এই সার্ভিসটি শুধুমাত্র রেজিস্টার্ড ক্যাফে মালিকদের জন্য।');
+                        openAuthModal();
+                        return false;
+                    }
+                    return true;
+                });
+            });
+        }
+
+        function renderPublicView() {
+            renderDynamicServices();
+            document.querySelectorAll('.service-card').forEach(card => {
+                const btn = card.querySelector('button');
+                if (btn && !btn.getAttribute('data-bound')) {
+                    btn.setAttribute('data-bound', 'true');
+                    const originalOnclick = btn.onclick;
+                    btn.onclick = function(e) {
+                        const session = localStorage.getItem(DB_KEYS.SESSION);
+                        if (!session) {
+                            e.preventDefault();
+                            alert('দয়া করে প্রথমে লগইন করুন। এই সার্ভিসটি শুধুমাত্র রেজিস্টার্ড ক্যাফে মালিকদের জন্য।');
+                            openAuthModal();
+                            return false;
+                        }
+                        if (typeof originalOnclick === 'function') {
+                            originalOnclick.call(this, e);
+                        }
+                    };
+                }
+            });
+        }
+
+        // ================================================================
+        // 🔍 FILTER & SEARCH
+        // ================================================================
+        function filterCategory(cat) {
+            const categories = document.querySelectorAll('.service-category');
+            const buttons = document.querySelectorAll('#filterButtons button');
+            buttons.forEach(btn => {
+                btn.classList.remove('bg-navy', 'text-white');
+                btn.classList.add('bg-slate-100', 'text-slate-700');
+            });
+            if (event && event.target) {
+                event.target.classList.remove('bg-slate-100', 'text-slate-700');
+                event.target.classList.add('bg-navy', 'text-white');
+            }
+
+            categories.forEach(section => {
+                if (cat === 'all' || section.getAttribute('data-cat') === cat) {
+                    section.style.display = 'block';
+                } else {
+                    section.style.display = 'none';
+                }
+            });
+        }
+
+        function setupPublicListeners() {
+            const menuBtn = document.getElementById('menuBtn');
+            const mobileMenu = document.getElementById('mobileMenu');
+            if (menuBtn && mobileMenu) {
+                menuBtn.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
+            }
+
+            const searchInput = document.getElementById('searchInput');
+            if (searchInput) {
+                searchInput.addEventListener('input', (e) => {
+                    const term = e.target.value.toLowerCase().trim();
+                    const cards = document.querySelectorAll('.service-card');
+                    cards.forEach(card => {
+                        const searchData = card.getAttribute('data-search') || '';
+                        const title = card.querySelector('h3').textContent.toLowerCase();
+                        const desc = card.querySelector('p').textContent.toLowerCase();
+                        if (searchData.includes(term) || title.includes(term) || desc.includes(term)) {
+                            card.style.display = 'flex';
+                        } else {
+                            card.style.display = 'none';
+                        }
+                    });
+                });
+            }
+            protectServiceLinks();
+        }
+
+        // ================================================================
+        // 🎨 USER PANEL RENDER - Fixed: Added Service Search Bar
+        // ================================================================
+        function renderUserPanel(user) {
+            const container = document.getElementById('appContainer');
+
+            if (user.status === 'BLOCKED') {
+                container.innerHTML = `
+                    <div class="min-h-[80vh] flex items-center justify-center p-4">
+                        <div class="max-w-md w-full bg-white rounded-3xl p-8 shadow-2xl border border-red-200 text-center">
+                            <div class="w-16 h-16 rounded-2xl bg-red-100 text-red-600 flex items-center justify-center mx-auto mb-4"><i data-lucide="ban" class="w-8 h-8"></i></div>
+                            <h2 class="text-2xl font-bold text-red-600 mb-2">আপনার অ্যাকাউন্ট ব্লক করা হয়েছে</h2>
+                            <p class="text-xs text-slate-600 mb-6">দুঃখিত, অ্যাডমিন কর্তৃক আপনার অ্যাকাউন্ট সাময়িকভাবে বা স্থায়ীভাবে স্থগিত করা হয়েছে।</p>
+                            <div class="bg-slate-50 rounded-2xl p-4 border border-slate-200 text-left mb-6 text-xs">
+                                <strong class="text-slate-900 block mb-1">বকের কারণ (Block Reason):</strong>
+                                <p class="text-red-600 font-medium">${user.blockReason || 'কোনো কারণ উল্লেখ করা হয়নি।'}</p>
+                            </div>
+                            <button onclick="logoutUser()" class="w-full py-3 rounded-xl bg-slate-900 text-white font-bold text-xs">লগআউট করুন</button>
+                        </div>
+                    </div>
+                `;
+                lucide.createIcons();
+                return;
+            }
+
+            if (user.status === 'PENDING' || user.subStatus === 'INACTIVE') {
+                renderSubscriptionAndPaymentFlow(user, container);
+                return;
+            }
+
+            if (user.status === 'EXPIRED') {
+                renderRenewalFlow(user, container);
+                return;
+            }
+
+            // ⭐ FULL ACTIVE USER DASHBOARD - SERVICES WITH SEARCH BAR
+            const services = JSON.parse(localStorage.getItem(DB_KEYS.SERVICES)) || [];
+            const activeServices = services.filter(s => s.active);
+
+            container.innerHTML = `
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                    <div class="bg-gradient-to-r from-navy to-blue-900 text-white rounded-3xl p-6 sm:p-8 shadow-xl flex flex-col md:flex-row items-center justify-between gap-6 mb-8">
+                        <div class="flex items-center gap-4">
+                            <div class="w-16 h-16 rounded-2xl bg-white/10 border border-white/20 flex items-center justify-center overflow-hidden shrink-0">
+                                ${user.logo ? `<img src="${user.logo}" class="w-full h-full object-cover">` : `<i data-lucide="store" class="w-8 h-8 text-gold"></i>`}
+                            </div>
+                            <div>
+                                <span class="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-400 text-[10px] font-bold uppercase tracking-wider">ACTIVE CAFE PANEL</span>
+                                <h2 class="text-2xl sm:text-3xl font-extrabold mt-1">${user.cafeName}</h2>
+                                <p class="text-xs text-slate-300">মালিক / Owner: ${user.ownerName} · ID: ${user.userId}</p>
+                            </div>
+                        </div>
+                        <div class="flex flex-wrap gap-3">
+                            <button onclick="openCafeSettingsModal()" class="px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold text-xs backdrop-blur-md transition flex items-center gap-2">
+                                <i data-lucide="settings" class="w-4 h-4"></i> ক্যাফে সেটিংস ও লোগো
+                            </button>
+                            <button onclick="logoutUser()" class="px-4 py-2.5 rounded-xl bg-red-600/80 hover:bg-red-600 text-white font-bold text-xs transition flex items-center gap-2">
+                                <i data-lucide="log-out" class="w-4 h-4"></i> লগআউট
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+                            <span class="text-xs text-slate-400 font-semibold uppercase">Current Plan</span>
+                            <h3 class="text-xl font-bold text-navy mt-1">${user.currentPlanId || 'Standard'}</h3>
+                            <p class="text-[11px] text-emerald-600 mt-1 font-medium">● Subscription Active</p>
+                        </div>
+                        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+                            <span class="text-xs text-slate-400 font-semibold uppercase">Start Date</span>
+                            <h3 class="text-base font-bold text-slate-800 mt-1">${user.planStart || 'N/A'}</h3>
+                        </div>
+                        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+                            <span class="text-xs text-slate-400 font-semibold uppercase">Expiry Date</span>
+                            <h3 class="text-base font-bold text-slate-800 mt-1">${user.expiryDate ? user.expiryDate : 'Lifetime Validity'}</h3>
+                        </div>
+                        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+                            <span class="text-xs text-slate-400 font-semibold uppercase">Days Remaining</span>
+                            <h3 class="text-xl font-bold text-cgreen mt-1">${user.expiryDate ? calculateDaysLeft(user.expiryDate) + ' Days' : 'Unlimited'}</h3>
+                        </div>
+                    </div>
+
+                    <!-- ⭐ SERVICES SECTION WITH SEARCH BAR -->
+                    <div class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-xl mb-8">
+                        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
+                            <div>
+                                <h3 class="text-xl font-bold text-navy">📋 আপনার সাইবার ক্যাফে সার্ভিসসমূহ</h3>
+                                <p class="text-xs text-slate-500">অ্যাডমিন প্যানেল থেকে যোগ করা সমস্ত সার্ভিস এখানে দেখাবে।</p>
+                            </div>
+                            <span class="px-3 py-1 rounded-xl bg-blue-50 text-navy font-bold text-xs whitespace-nowrap">${activeServices.length} Services</span>
+                        </div>
+
+                        <!-- 🔍 SERVICE SEARCH BAR -->
+                        <div class="relative mb-6">
+                            <div class="relative">
+                                <i data-lucide="search" class="w-5 h-5 absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                                <input id="serviceSearchInput" type="text" placeholder="সার্ভিস খুঁজুন... (যেমন: Voter, Ration, Passport)" 
+                                    class="w-full pl-12 pr-12 py-3 rounded-xl border-2 border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-navy focus:border-navy bg-slate-50 transition" />
+                                <button id="clearServiceSearch" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-red-600 transition hidden">
+                                    <i data-lucide="x-circle" class="w-5 h-5"></i>
+                                </button>
+                            </div>
+                            <div id="serviceSearchCount" class="text-xs text-slate-400 mt-2"></div>
+                        </div>
+
+                        <div id="servicesGrid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                            ${activeServices.length === 0 ? `
+                                <div class="col-span-full text-center text-slate-400 text-sm py-8">
+                                    <div class="text-4xl mb-3">🔧</div>
+                                    <p>কোনো সার্ভিস যোগ করা হয়নি।</p>
+                                    <p class="text-xs text-slate-400">অ্যাডমিন প্যানেল থেকে সার্ভিস যোগ করুন।</p>
+                                </div>
+                            ` : activeServices.map(s => `
+                                <div class="service-card-admin bg-slate-50 hover:bg-blue-50 rounded-2xl p-5 border border-slate-200 transition flex flex-col justify-between" data-service-name="${s.name.toLowerCase()}" data-service-category="${s.category || ''}">
+                                    <div>
+                                        <div class="w-12 h-12 rounded-xl bg-navy/10 text-navy flex items-center justify-center text-2xl mb-3">${s.icon || '🔗'}</div>
+                                        <h4 class="font-bold text-sm text-slate-900">${s.name}</h4>
+                                        <p class="text-[11px] text-slate-500 mt-1">${s.category || 'General'}</p>
+                                    </div>
+                                    <a href="${s.url}" target="_blank" rel="noopener noreferrer" class="mt-4 w-full py-2.5 rounded-xl bg-navy hover:bg-blue-900 text-white text-xs font-bold shadow flex items-center justify-center gap-2 transition">
+                                        <i data-lucide="external-link" class="w-3.5 h-3.5"></i> OPEN SERVICE
+                                    </a>
+                                </div>
+                            `).join('')}
+                        </div>
+                        <div class="mt-4 p-3 bg-amber-50 rounded-xl border border-amber-100 text-[10px] text-amber-700">
+                            💡 এই সার্ভিসগুলো অ্যাডমিন প্যানেল থেকে যোগ/পরিবর্তন করা হয়। পরিবর্তন হলে এখানে auto আপডেট হবে।
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-xl">
+                        <h3 class="text-lg font-bold text-navy mb-4">আপনার পেমেন্ট ও রিকোয়েস্ট ইতিহাস</h3>
+                        ${renderUserPaymentHistoryTable(user.userId)}
+                    </div>
+                </div>
+            `;
+            lucide.createIcons();
+            
+            // Setup service search functionality
+            setupServiceSearch();
+        }
+
+        // ================================================================
+        // 🔍 SERVICE SEARCH FUNCTIONALITY (Inside User Panel)
+        // ================================================================
+        function setupServiceSearch() {
+            const searchInput = document.getElementById('serviceSearchInput');
+            const clearBtn = document.getElementById('clearServiceSearch');
+            const countEl = document.getElementById('serviceSearchCount');
+            
+            if (!searchInput) return;
+            
+            function filterServices() {
+                const term = searchInput.value.toLowerCase().trim();
+                const serviceCards = document.querySelectorAll('#servicesGrid .service-card-admin');
+                let visibleCount = 0;
+                
+                serviceCards.forEach(card => {
+                    const name = card.getAttribute('data-service-name') || '';
+                    const category = card.getAttribute('data-service-category') || '';
+                    
+                    if (term === '' || name.includes(term) || category.includes(term)) {
+                        card.classList.remove('hidden-service');
+                        visibleCount++;
+                    } else {
+                        card.classList.add('hidden-service');
+                    }
+                });
+                
+                // Update count
+                if (countEl) {
+                    if (term === '') {
+                        countEl.textContent = `${serviceCards.length} টি সার্ভিস`;
+                    } else {
+                        countEl.textContent = `${visibleCount} টি সার্ভিস পাওয়া গেছে (মোট ${serviceCards.length} টি)`;
+                    }
+                }
+                
+                // Show/hide clear button
+                if (clearBtn) {
+                    if (term.length > 0) {
+                        clearBtn.classList.remove('hidden');
+                    } else {
+                        clearBtn.classList.add('hidden');
+                    }
+                }
+            }
+            
+            // Event listeners
+            searchInput.addEventListener('input', filterServices);
+            
+            if (clearBtn) {
+                clearBtn.addEventListener('click', function() {
+                    searchInput.value = '';
+                    filterServices();
+                    searchInput.focus();
+                });
+            }
+            
+            // Initial count
+            if (countEl) {
+                const total = document.querySelectorAll('#servicesGrid .service-card-admin').length;
+                countEl.textContent = `${total} টি সার্ভিস`;
+            }
+        }
+
+        function renderQuickAccessServices() {
+            const services = JSON.parse(localStorage.getItem(DB_KEYS.SERVICES)) || [];
+            const activeServices = services.filter(s => s.active).slice(0, 8);
+            
+            if (activeServices.length === 0) {
+                return `<div class="col-span-full text-center text-slate-400 text-sm py-4">কোনো সার্ভিস নেই। অ্যাডমিন প্যানেল থেকে যোগ করুন।</div>`;
+            }
+
+            return activeServices.map(s => `
+                <a href="${s.url}" target="_blank" rel="noopener noreferrer" class="p-4 rounded-2xl bg-slate-50 hover:bg-blue-50 border border-slate-200 transition flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-navy text-gold flex items-center justify-center font-bold text-xl">${s.icon || '🔗'}</div>
+                    <div><h4 class="font-bold text-sm">${s.name}</h4><span class="text-[11px] text-slate-500">${s.category || 'Service'}</span></div>
+                </a>
+            `).join('');
+        }
+
+        function calculateDaysLeft(expiryStr) {
+            const exp = new Date(expiryStr);
+            const now = new Date();
+            const diffTime = exp - now;
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            return diffDays > 0 ? diffDays : 0;
+        }
+
+        function renderUserPaymentHistoryTable(userId) {
+            const requests = JSON.parse(localStorage.getItem(DB_KEYS.REQUESTS)) || [];
+            const myReqs = requests.filter(r => r.userId === userId).slice().reverse();
+
+            if (myReqs.length === 0) {
+                return `<p class="text-xs text-slate-400 text-center py-4">কোনো পেমেন্ট ইতিহাস নেই।</p>`;
+            }
+
+            return `
+                <div class="overflow-x-auto">
+                    <table class="w-full text-xs text-left">
+                        <thead class="bg-slate-100 text-slate-600 uppercase border-b border-slate-200">
+                            <tr>
+                                <th class="p-3">তারিখ</th>
+                                <th class="p-3">প্ল্যান</th>
+                                <th class="p-3">পরিমাণ</th>
+                                <th class="p-3">UTR / Transaction ID</th>
+                                <th class="p-3">স্ট্যাটাস</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100">
+                            ${myReqs.map(r => {
+                                const badge = r.status === 'APPROVED' ? 'bg-emerald-100 text-emerald-800' : r.status === 'REJECTED' ? 'bg-red-100 text-red-800' : 'bg-amber-100 text-amber-800';
+                                return `
+                                    <tr>
+                                        <td class="p-3 text-slate-500">${r.date}</td>
+                                        <td class="p-3 font-bold text-slate-800">${r.planName}</td>
+                                        <td class="p-3 font-bold text-navy">₹${r.amount}</td>
+                                        <td class="p-3 font-mono text-slate-700">${r.utr}</td>
+                                        <td class="p-3"><span class="px-2.5 py-1 rounded-full font-bold ${badge}">${r.status}</span> ${r.rejectReason ? '<span class="text-[10px] text-red-600 block mt-1">Reason: ' + r.rejectReason + '</span>' : ''}</td>
+                                    </tr>
+                                `;
+                            }).join('')}
+                        </tbody>
+                    </table>
+                </div>
+            `;
+        }
+
+        // ================================================================
+        // 💳 SUBSCRIPTION & PAYMENT FLOW
+        // ================================================================
+        function renderSubscriptionAndPaymentFlow(user, container) {
+            const plans = JSON.parse(localStorage.getItem(DB_KEYS.PLANS)) || [];
+            const requests = JSON.parse(localStorage.getItem(DB_KEYS.REQUESTS)) || [];
+            const myRequests = requests.filter(r => r.userId === user.userId);
+            const pendingReq = myRequests.find(r => r.status === 'PENDING');
+            const settings = JSON.parse(localStorage.getItem(DB_KEYS.SETTINGS)) || {};
+
+            container.innerHTML = `
+                <div class="max-w-4xl mx-auto px-4 py-10">
+                    <div class="bg-white rounded-3xl p-8 shadow-2xl border border-slate-200 mb-8">
+                        <div class="flex items-center justify-between border-b border-slate-200 pb-6 mb-6">
+                            <div>
+                                <span class="px-3 py-1 rounded-full bg-amber-100 text-amber-800 text-xs font-bold">ACCOUNT STATUS: PENDING APPROVAL</span>
+                                <h2 class="text-2xl font-extrabold text-navy mt-2">স্বাগতম, ${user.ownerName} (${user.cafeName})</h2>
+                                <p class="text-xs text-slate-500 mt-1">আপনার অ্যাকাউন্ট তৈরি হয়েছে। দয়া করে নিচে থেকে একটি সাবস্ক্রিপশন প্ল্যান বেছে পেমেন্ট সম্পন্ন করুন।</p>
+                            </div>
+                            <button onclick="logoutUser()" class="px-4 py-2 rounded-xl bg-slate-100 text-slate-700 text-xs font-bold">লগআউট</button>
+                        </div>
+
+                        ${pendingReq ? `
+                            <div class="bg-amber-50 border border-amber-200 rounded-2xl p-6 text-center mb-8">
+                                <div class="w-12 h-12 rounded-full bg-amber-100 text-amber-700 flex items-center justify-center mx-auto mb-3"><i data-lucide="clock" class="w-6 h-6"></i></div>
+                                <h3 class="font-bold text-base text-amber-900 mb-1">পেমেন্ট রিকোয়েস্ট পেন্ডিং রয়েছে</h3>
+                                <p class="text-xs text-amber-800">আপনার UTR ID: <strong class="font-mono">${pendingReq.utr}</strong> (${pendingReq.planName} - ₹${pendingReq.amount}) অ্যাডমিন পর্যালোচনার অপেক্ষায় আছে। অনুমোদন পেলে প্যানেল খুলে যাবে।</p>
+                            </div>
+                        ` : ''}
+
+                        <h3 class="font-bold text-lg text-slate-900 mb-4">আমাদের সাবস্ক্রিপশন প্ল্যানসমূহ</h3>
+                        <div class="grid md:grid-cols-3 gap-6 mb-8">
+                            ${plans.filter(p => p.active).map(p => `
+                                <div class="bg-slate-50 rounded-2xl p-6 border-2 border-slate-200 flex flex-col justify-between hover:border-navy transition">
+                                    <div>
+                                        <h4 class="font-bold text-navy text-base mb-1">${p.name}</h4>
+                                        <div class="text-2xl font-extrabold text-slate-900 mb-3">₹${p.price} <span class="text-xs font-normal text-slate-500">${p.days ? '/ ' + p.days + ' Days' : '/ Lifetime'}</span></div>
+                                        <p class="text-xs text-slate-600 mb-4">${p.desc}</p>
+                                        <ul class="space-y-2 text-xs text-slate-700 mb-6">
+                                            ${p.features.map(f => `<li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-cgreen"></i> ${f}</li>`).join('')}
+                                        </ul>
+                                    </div>
+                                    <button onclick="openPaymentModal('${p.id}', '${p.name}', ${p.price}, ${p.days || 0})" class="w-full py-3 rounded-xl bg-navy text-white text-xs font-bold shadow hover:bg-blue-900 transition">
+                                        এই প্ল্যানটি কিনুন (₹${p.price})
+                                    </button>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                </div>
+            `;
+            lucide.createIcons();
+        }
+
+        let countdownInterval = null;
+
+        function openPaymentModal(planId, planName, amount, days) {
+            const settings = JSON.parse(localStorage.getItem(DB_KEYS.SETTINGS)) || {};
+            const upiLink = `upi://pay?pa=${settings.upiId}&pn=${encodeURIComponent(settings.payeeName)}&am=${amount}&cu=INR&tn=${encodeURIComponent('CyberCafe Subscription ' + planName)}`;
+            const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(upiLink)}&bgcolor=ffffff&color=061B4F`;
+
+            const content = `
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="font-bold text-lg text-navy">UPI পেমেন্ট সম্পন্ন করুন (২ মিনিট)</h3>
+                    <button onclick="closeModal()" class="p-1 rounded-lg hover:bg-slate-100"><i data-lucide="x" class="w-5 h-5"></i></button>
+                </div>
+                <div id="countdownDisplay" class="bg-red-50 border border-red-200 rounded-xl p-3 text-center mb-4">
+                    <span class="text-xs font-bold text-red-700">⏳ পেমেন্টের জন্য সময় বাকি: <span id="timer" class="text-lg font-mono text-navy">02:00</span></span>
+                </div>
+                <div class="bg-blue-50 border border-blue-100 rounded-2xl p-4 mb-4 text-center">
+                    <span class="text-xs text-slate-500">নির্বাচিত প্ল্যান: <strong class="text-navy">${planName}</strong></span>
+                    <div class="text-2xl font-extrabold text-navy my-1">₹${amount}</div>
+                    <p class="text-xs text-slate-600 mt-2">UPI ID: <strong class="text-navy font-mono">${settings.upiId}</strong></p>
+                    <p class="text-[11px] text-slate-500 mt-1">${settings.instructions}</p>
+                </div>
+                <div class="flex flex-col items-center gap-4 mb-6">
+                    <img src="${qrUrl}" alt="UPI QR Code" class="w-48 h-48 border rounded-xl shadow" />
+                    <a href="${upiLink}" class="w-full py-3 rounded-xl bg-cgreen text-white text-xs font-bold shadow flex items-center justify-center gap-2 transition hover:bg-emerald-700">
+                        <i data-lucide="external-link" class="w-4 h-4"></i> UPI অ্যাপ ওপেন করুন (Pay Now)
+                    </a>
+                </div>
+                <form onsubmit="submitPaymentRequest(event, '${planId}', '${planName}', ${amount}, ${days})" class="space-y-4 pt-4 border-t border-slate-200">
+                    <div>
+                        <label class="text-xs font-semibold text-slate-700">UTR / Transaction ID দিন (পেমেন্টের পর):</label>
+                        <input name="utr" required placeholder="যেমন: 432156789012" class="mt-1 w-full px-4 py-3 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-navy font-mono"/>
+                    </div>
+                    <div>
+                        <label class="text-xs font-semibold text-slate-700">নোট (ঐচ্ছিক)</label>
+                        <input name="note" placeholder="যেমন: Paid via Google Pay" class="mt-1 w-full px-4 py-3 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-navy"/>
+                    </div>
+                    <button type="submit" class="w-full py-3.5 rounded-xl bg-navy text-white text-sm font-bold shadow hover:bg-blue-900 transition">
+                        পেমেন্ট রিকোয়েস্ট সাবমিট করুন
+                    </button>
+                </form>
+            `;
+            showModal(content);
+            startCountdown(120);
+        }
+
+        function startCountdown(seconds) {
+            if (countdownInterval) clearInterval(countdownInterval);
+            let remaining = seconds;
+            const timerEl = document.getElementById('timer');
+            if (!timerEl) return;
+            countdownInterval = setInterval(() => {
+                const mins = Math.floor(remaining / 60);
+                const secs = remaining % 60;
+                timerEl.textContent = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+                if (remaining <= 0) {
+                    clearInterval(countdownInterval);
+                    timerEl.textContent = '⏰ সময় শেষ!';
+                    alert('পেমেন্টের সময় শেষ! দয়া করে নতুন করে চেষ্টা করুন।');
+                    closeModal();
+                }
+                remaining--;
+            }, 1000);
+        }
+
+        function submitPaymentRequest(e, planId, planName, amount, days) {
+            e.preventDefault();
+            if (countdownInterval) clearInterval(countdownInterval);
+            const fd = new FormData(e.target);
+            const utr = fd.get('utr').trim();
+            const note = fd.get('note').trim();
+            const sessionUser = JSON.parse(localStorage.getItem(DB_KEYS.SESSION));
+
+            const requests = JSON.parse(localStorage.getItem(DB_KEYS.REQUESTS)) || [];
+            const newReq = {
+                id: 'req_' + Date.now(),
+                userId: sessionUser.userId,
+                cafeName: sessionUser.cafeName,
+                ownerName: sessionUser.ownerName,
+                planId,
+                planName,
+                amount,
+                days,
+                utr,
+                note,
+                date: new Date().toLocaleString('en-IN'),
+                status: 'PENDING',
+                rejectReason: ''
+            };
+
+            requests.push(newReq);
+            localStorage.setItem(DB_KEYS.REQUESTS, JSON.stringify(requests));
+
+            logActivity('Payment Submitted', sessionUser.userId, sessionUser.cafeName, `Submitted UTR ${utr} for plan ${planName}`);
+            closeModal();
+            checkCurrentSession();
+            alert('পেমেন্ট রিকোয়েস্ট সফলভাবে সাবমিট হয়েছে! অ্যাডমিন যাচাই করার পর আপনার অ্যাকাউন্ট সক্রিয় করা হবে।');
+        }
+
+        function renderRenewalFlow(user, container) {
+            container.innerHTML = `
+                <div class="max-w-xl mx-auto px-4 py-16">
+                    <div class="bg-white rounded-3xl p-8 shadow-2xl border border-red-200 text-center">
+                        <div class="w-16 h-16 rounded-2xl bg-red-100 text-red-600 flex items-center justify-center mx-auto mb-4"><i data-lucide="clock-alert" class="w-8 h-8"></i></div>
+                        <h2 class="text-2xl font-bold text-red-600 mb-2">আপনার সাবস্ক্রিপশনের মেয়াদ শেষ!</h2>
+                        <p class="text-xs text-slate-600 mb-6">আপনার ক্যাফে প্যানেলের এক্সেস সাময়িকভাবে বন্ধ রয়েছে। পুনরায় সচল করতে প্ল্যান রিনিউ করুন।</p>
+                        <button onclick="user.status = 'PENDING'; updateUserInDB(user); checkCurrentSession();" class="w-full py-3.5 rounded-xl bg-navy text-white font-bold text-sm shadow hover:bg-blue-900 transition mb-3">
+                            প্ল্যান রিনিউ করুন (Renew Plan)
+                        </button>
+                        <button onclick="logoutUser()" class="w-full py-2.5 rounded-xl bg-slate-100 text-slate-700 text-xs font-semibold">লগআউট</button>
+                    </div>
+                </div>
+            `;
+            lucide.createIcons();
+        }
+
+        // ================================================================
+        // ⚙️ CAFE SETTINGS MODAL
+        // ================================================================
+        function openCafeSettingsModal() {
+            const sessionUser = JSON.parse(localStorage.getItem(DB_KEYS.SESSION));
+            const content = `
+                <div class="flex items-center justify-between mb-6">
+                    <h3 class="font-bold text-xl text-navy">ক্যাফে প্রোফাইল ও লোগো সেটিংস</h3>
+                    <button onclick="closeModal()" class="p-1 rounded-lg hover:bg-slate-100"><i data-lucide="x" class="w-5 h-5"></i></button>
+                </div>
+                <form onsubmit="handleCafeSettingsUpdate(event)" class="space-y-4">
+                    <div>
+                        <label class="text-xs font-semibold text-slate-700">সাইবার ক্যাফের নাম (Cyber Cafe Name)</label>
+                        <input name="cafeName" required value="${sessionUser.cafeName}" class="mt-1 w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-navy bg-slate-50"/>
+                    </div>
+                    <div>
+                        <label class="text-xs font-semibold text-slate-700">মালিকের নাম (Owner Name)</label>
+                        <input name="ownerName" required value="${sessionUser.ownerName}" class="mt-1 w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-navy bg-slate-50"/>
+                    </div>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="text-xs font-semibold text-slate-700">মোবাইল নম্বর</label>
+                            <input name="mobile" required value="${sessionUser.mobile}" class="mt-1 w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-navy bg-slate-50"/>
+                        </div>
+                        <div>
+                            <label class="text-xs font-semibold text-slate-700">ইমেইল</label>
+                            <input name="email" value="${sessionUser.email || ''}" class="mt-1 w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-navy bg-slate-50"/>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="text-xs font-semibold text-slate-700">লোগো আপলোড (Image / Base64)</label>
+                        <div class="flex items-center gap-4 mt-1">
+                            <div id="logoPreviewBox" class="w-14 h-14 rounded-xl border border-slate-200 bg-slate-100 flex items-center justify-center overflow-hidden shrink-0">
+                                ${sessionUser.logo ? `<img src="${sessionUser.logo}" class="w-full h-full object-cover">` : `<i data-lucide="image" class="w-6 h-6 text-slate-400"></i>`}
+                            </div>
+                            <input type="file" accept="image/*" onchange="previewAndCompressLogo(event)" class="text-xs text-slate-500"/>
+                        </div>
+                        <input type="hidden" id="logoBase64Input" name="logo" value="${sessionUser.logo || ''}"/>
+                    </div>
+                    <button type="submit" class="w-full py-3.5 rounded-xl bg-navy text-white text-sm font-bold shadow hover:bg-blue-900 transition mt-4">
+                        সেটিংস সংরক্ষণ করুন
+                    </button>
+                </form>
+            `;
+            showModal(content);
+        }
+
+        function previewAndCompressLogo(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = new Image();
+                img.onload = function() {
+                    const canvas = document.createElement('canvas');
+                    const MAX_WIDTH = 200;
+                    const MAX_HEIGHT = 200;
+                    let width = img.width;
+                    let height = img.height;
+
+                    if (width > height) {
+                        if (width > MAX_WIDTH) { height *= MAX_WIDTH / width; width = MAX_WIDTH; }
+                    } else {
+                        if (height > MAX_HEIGHT) { width *= MAX_HEIGHT / height; height = MAX_HEIGHT; }
+                    }
+
+                    canvas.width = width;
+                    canvas.height = height;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, width, height);
+                    const dataUrl = canvas.toDataURL('image/jpeg', 0.8);
+
+                    document.getElementById('logoBase64Input').value = dataUrl;
+                    document.getElementById('logoPreviewBox').innerHTML = `<img src="${dataUrl}" class="w-full h-full object-cover">`;
+                }
+                img.src = e.target.result;
+            }
+            reader.readAsDataURL(file);
+        }
+
+        function handleCafeSettingsUpdate(e) {
+            e.preventDefault();
+            const fd = new FormData(e.target);
+            let sessionUser = JSON.parse(localStorage.getItem(DB_KEYS.SESSION));
+
+            sessionUser.cafeName = fd.get('cafeName').trim();
+            sessionUser.ownerName = fd.get('ownerName').trim();
+            sessionUser.mobile = fd.get('mobile').trim();
+            sessionUser.email = fd.get('email').trim() || 'sm7cocybercafe@gmail.com';
+            sessionUser.logo = fd.get('logo').trim();
+
+            updateUserInDB(sessionUser);
+            localStorage.setItem(DB_KEYS.SESSION, JSON.stringify(sessionUser));
+
+            logActivity('Profile Updated', sessionUser.userId, sessionUser.cafeName, 'Updated cyber cafe profile & logo.');
+            closeModal();
+            checkCurrentSession();
+            alert('প্রোফাইল সেটিংস সফলভাবে আপডেট হয়েছে!');
+        }
+
+        // ================================================================
+        // 🔧 MODAL UTILITIES
+        // ================================================================
+        function showModal(htmlContent) {
+            const overlay = document.getElementById('modalOverlay');
+            const content = document.getElementById('modalContent');
+            content.innerHTML = htmlContent;
+            overlay.classList.remove('hidden');
+            lucide.createIcons();
+        }
+
+        function closeModal() {
+            const overlay = document.getElementById('modalOverlay');
+            overlay.classList.add('hidden');
+            if (countdownInterval) clearInterval(countdownInterval);
+        }
+
+        // ================================================================
+        // 🚀 INIT ON LOAD
+        // ================================================================
+        document.addEventListener("DOMContentLoaded", async () => {
+            try {
+                await bootstrapFirebase();
+                initSystemStorage();
+                lucide.createIcons();
+                setupPublicListeners();
+                renderDynamicServices();
+                checkCurrentSession();
+                console.log('✅ User Portal Ready with Dynamic Services!');
+            } catch (error) {
+                console.error("Firebase bootstrap failed:", error);
+                lucide.createIcons();
+                initSystemStorage();
+                setupPublicListeners();
+                renderDynamicServices();
+                checkCurrentSession();
+            }
+        });
+    </script>
+</body>
+</html>
