@@ -1,0 +1,1 @@
+Upload the contents of this folder to the Netlify site. The HTML uses root-relative social preview and icon paths. Add the final public site URL as canonical/og:url after the exact live URL is known. Google logo display and indexing are not immediate or guaranteed.
